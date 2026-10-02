@@ -69,3 +69,13 @@ body.cq-open .cq-toggle { right: 416px; }
   body.cq-open #app { margin-right: 0; }
   body.cq-open .cq-toggle { right: 16px; }
 }
+
+/* Front matter: one quiet line above the text; the YAML block opens on request. */
+body:not(.cq-show-front-matter) #editor pre[data-frontmatter] { display: none; }
+.cq-front-matter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 20px; font: 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #66675f; user-select: none; }
+.cq-front-matter-text { padding: 3px 10px; border: 1px solid #e3e3dc; border-radius: 999px; background: #f6f6f2; }
+.cq-front-matter-toggle { border: 0; padding: 0; background: none; color: #66675f; font: inherit; text-decoration: underline; cursor: pointer; }
+
+/* Proof's toasts stay clear of the Review panel; its share welcome toast is not shown in review. */
+.proof-share-welcome-toast { display: none !important; }
+body.cq-open .proof-external-change-toast { right: 412px !important; }

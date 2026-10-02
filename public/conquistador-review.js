@@ -217,8 +217,32 @@
     ].filter(Boolean);
   }
 
+  // Front matter stays in the Markdown. The editor shows it as one quiet line; the YAML opens on request.
+  function renderFrontMatterChip() {
+    var editor = document.getElementById('editor');
+    if (!editor) return;
+    var data = parseFrontMatter(state.markdown).data;
+    var keys = Object.keys(data);
+    var chip = document.getElementById('cq-front-matter');
+    if (!keys.length) { if (chip) chip.remove(); return; }
+    if (!chip) {
+      chip = el('div', { id: 'cq-front-matter', class: 'cq-front-matter', contenteditable: 'false' }, [
+        el('span', { class: 'cq-front-matter-text' }),
+        el('button', { type: 'button', class: 'cq-front-matter-toggle', onclick: function () {
+          var shown = document.body.classList.toggle('cq-show-front-matter');
+          this.textContent = shown ? 'Hide front matter' : 'Front matter';
+        } }, ['Front matter']),
+      ]);
+      editor.insertBefore(chip, editor.firstChild);
+    }
+    var label = (CHANNELS.filter(function (c) { return c[0] === state.channel; })[0] || [])[1] || data.channel;
+    var parts = [label, data.title || data.subject, data.author || data.brand].filter(Boolean);
+    chip.querySelector('.cq-front-matter-text').textContent = parts.length ? parts.join(' · ') : keys.length + ' front matter fields';
+  }
+
   var panel;
   function render() {
+    renderFrontMatterChip();
     if (!panel) return;
     var body = panel.querySelector('.cq-body');
     var content = state.tab === 'preview' ? renderPreview() : state.tab === 'playbooks' ? renderPlaybooks() : renderApproval();
