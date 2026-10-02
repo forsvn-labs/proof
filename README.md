@@ -1,4 +1,8 @@
-# Proof SDK
+# Proof SDK (FORSVN fork)
+
+This is the FORSVN fork of [Proof SDK](https://github.com/EveryInc/proof-sdk). It adds the
+[Conquistador review](docs/conquistador-review.md) panel and routes, binds to `127.0.0.1`, and
+carries a `package-lock.json`. See [NOTICE](NOTICE). The upstream MIT license applies.
 
 Proof SDK is the open-source editor, collaboration server, provenance model, and agent HTTP bridge that power collaborative documents in Proof.
 

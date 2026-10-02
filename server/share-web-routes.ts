@@ -43,6 +43,7 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const CONQUISTADOR_REVIEW_TAGS = '<link rel="stylesheet" href="/conquistador-review.css"><script src="/conquistador-review.js" defer></script>';
 export const shareWebRoutes = Router();
 
 // Headerless alias for agents: create a shared web doc without client-compat headers.
@@ -561,7 +562,7 @@ shareWebRoutes.get('/d/:slug', (req: Request, res: Response) => {
 
   // Option 1: Non-browser agents doing plain web_fetch get a readable HTML page
   // with the document content + API instructions instead of the JS SPA.
-  if (isAgentHtmlFetch(req)) {
+  if (isAgentHtmlFetch(req) && req.query.format !== 'html') {
     if (doc) {
       recordShareLinkOpen('success', `AGENT_HTML_${doc.share_state}`);
     }
@@ -652,5 +653,6 @@ shareWebRoutes.get('/d/:slug', (req: Request, res: Response) => {
     } : null,
     shareState: doc?.share_state ?? 'MISSING',
   });
-  res.type('html').send(injectShareHtmlDiscoveryTags(shareHtml ?? '', slug, doc?.markdown ?? '', preview, configShareToken));
+  res.type('html').send(injectShareHtmlDiscoveryTags(shareHtml ?? '', slug, doc?.markdown ?? '', preview, configShareToken)
+    .replace('</body>', `${CONQUISTADOR_REVIEW_TAGS}</body>`));
 });

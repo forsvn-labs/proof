@@ -1,0 +1,18 @@
+FORSVN Proof
+
+This repository is a fork of Proof SDK (https://github.com/EveryInc/proof-sdk),
+forked at commit fb2578758f1c62776301209131181643c5f4a19a.
+
+Proof SDK is copyright (c) 2026 Every and is licensed under the MIT License.
+The LICENSE file in this repository is the unmodified upstream license, and it
+applies to the upstream code and to the changes in this fork.
+
+FORSVN changes, copyright (c) 2026 FORSVN, MIT License:
+- Loopback binding, built editor asset serving, and the format=html override.
+- Conquistador review: channel preview panes, a "Playbooks applied" panel, an
+  approval stamp bound to the SHA-256 of the document text, and the routes
+  under /documents/:slug/conquistador/.
+- package-lock.json for reproducible installs from a pinned commit.
+
+"Proof" and "Every" are trademarks of their owners. See TRADEMARKS.md. This
+fork is not made or endorsed by Every.
