@@ -79,3 +79,8 @@ body:not(.cq-show-front-matter) #editor pre[data-frontmatter] { display: none; }
 /* Proof's toasts stay clear of the Review panel; its share welcome toast is not shown in review. */
 .proof-share-welcome-toast { display: none !important; }
 body.cq-open .proof-external-change-toast { right: 412px !important; }
+
+/* Conquistador review sessions are local and use one agent through the bridge: no Share or agent buttons. */
+html[data-conquistador-review] .share-pill-share-btn,
+html[data-conquistador-review] .share-pill-agent-trigger,
+html[data-conquistador-review] .share-pill-agent-overflow { display: none !important; }

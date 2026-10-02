@@ -15,6 +15,7 @@ import { getCookie, shareTokenCookieName } from './cookies.js';
 import { handleShareMarkdown, shareMarkdownBodyParser } from './routes.js';
 import { getSnapshotHtml, getSnapshotPublicUrl } from './snapshot.js';
 import { stripProofSpanTags } from './proof-span-strip.js';
+import { REVIEW_OWNER_ID } from './conquistador-review.js';
 import {
   getCanonicalReadableDocumentSync,
   isCanonicalReadMutationReady,
@@ -43,6 +44,7 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const CONQUISTADOR_SESSION_TAG = '<script>document.documentElement.setAttribute("data-conquistador-review", "")</script>';
 const CONQUISTADOR_REVIEW_TAGS = '<link rel="stylesheet" href="/conquistador-review.css"><script src="/conquistador-review.js" defer></script>';
 export const shareWebRoutes = Router();
 
@@ -654,5 +656,5 @@ shareWebRoutes.get('/d/:slug', (req: Request, res: Response) => {
     shareState: doc?.share_state ?? 'MISSING',
   });
   res.type('html').send(injectShareHtmlDiscoveryTags(shareHtml ?? '', slug, doc?.markdown ?? '', preview, configShareToken)
-    .replace('</body>', `${CONQUISTADOR_REVIEW_TAGS}</body>`));
+    .replace('</body>', `${doc?.owner_id === REVIEW_OWNER_ID ? CONQUISTADOR_SESSION_TAG : ''}${CONQUISTADOR_REVIEW_TAGS}</body>`));
 });

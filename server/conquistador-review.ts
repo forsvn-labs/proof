@@ -10,6 +10,9 @@ import { addDocumentEvent, getDb, resolveDocumentAccess } from './db.js';
 import { stripAllProofSpanTags } from './proof-span-strip.js';
 
 export const CHECK_AUTHOR = 'ai:conquistador-check';
+// Conquistador creates review documents with this owner id. Their pages hide Proof's Share and agent buttons:
+// review is local only and uses one agent through the bridge.
+export const REVIEW_OWNER_ID = 'conquistador:review';
 const CHANNELS = ['x', 'linkedin', 'email', 'search', 'ad'] as const;
 const CHANNEL_ALIASES: Record<string, (typeof CHANNELS)[number]> = {
   twitter: 'x', 'x-post': 'x', thread: 'x',

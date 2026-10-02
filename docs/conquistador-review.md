@@ -18,6 +18,10 @@ The editor page shows a **Review** panel with three tabs:
   for example `## Playbooks applied` with `- write-social: hook-first opening`.
 - **Approval**: the approval stamp.
 
+Documents created with `ownerId: "conquistador:review"` are review sessions. Their pages hide Proof's
+**Share** and agent buttons, because review is local and uses one agent through the bridge. Other
+documents keep both.
+
 ## Approval stamp
 
 The stamp records the approver's name, the time, and the SHA-256 of the clean document Markdown:
