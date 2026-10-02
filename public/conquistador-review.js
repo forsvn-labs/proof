@@ -104,7 +104,9 @@
   }
   function previewLinkedIn(doc, body) {
     var text = plain(body);
-    var fold = 210;
+    // Fold at 150 characters, as LinkedIn's ad spec advises for intro text:
+    // https://www.linkedin.com/help/lms/answer/a426534. `conquistador check` (linkedin-hook) uses the same limit.
+    var fold = 150;
     var folded = Array.from(text).length > fold;
     var shown = el('div', { class: 'cq-li-text', text: folded ? clip(text, fold) : text });
     var more = folded ? el('button', { class: 'cq-more', type: 'button', text: '…see more', onclick: function () { shown.textContent = text; more.remove(); } }) : null;

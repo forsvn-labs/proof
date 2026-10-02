@@ -10,7 +10,8 @@ The editor page shows a **Review** panel with three tabs:
 
 - **Preview**: the document in a channel frame. Set `channel:` in the front matter to `x`,
   `linkedin`, `email`, `search`, or `ad`. The reviewer can choose another frame; that choice is
-  not saved. Counters show the channel limits. The X frame splits a thread at each `---` line.
+  not saved. Counters show the channel limits. The LinkedIn frame folds at 150 characters, the limit that
+  `conquistador check` uses ([LinkedIn ad spec](https://www.linkedin.com/help/lms/answer/a426534)). The X frame splits a thread at each `---` line.
   Front matter keys that frames read: `author`, `handle`, `brand`, `headline`, `subject`,
   `preheader`, `from`, `title`, `description`, `url`, `primary`, `cta`, `image`.
 - **Playbooks applied**: the list items of the final section when its heading names playbooks,
