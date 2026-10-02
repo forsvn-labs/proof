@@ -28,6 +28,22 @@
     return String(text).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
   }
 
+  // Removes Proof's <span data-proof> anchors and their closing tags; the text inside stays.
+  function withoutProofSpans(markdown) {
+    var out = '';
+    var open = [];
+    var pattern = /<span\b[^>]*>|<\/span>/g;
+    var last = 0;
+    var found;
+    while ((found = pattern.exec(markdown))) {
+      out += markdown.slice(last, found.index);
+      last = pattern.lastIndex;
+      if (found[0] !== '</span>') { open.push(/\bdata-proof=/.test(found[0])); if (!open[open.length - 1]) out += found[0]; }
+      else if (!open.pop()) out += found[0];
+    }
+    return out + markdown.slice(last);
+  }
+
   // Document parsing mirrors server/conquistador-review.ts.
   function parseFrontMatter(markdown) {
     var found = /^---\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/.exec(markdown);
@@ -268,9 +284,10 @@
   }
   function refreshMarkdown() {
     var live = window.proof && typeof window.proof.getMarkdownSnapshot === 'function' ? window.proof.getMarkdownSnapshot() : null;
-    if (live && typeof live.content === 'string') { state.markdown = live.content; return Promise.resolve(); }
+    // Comment and suggestion anchors are Proof markup, not text; counters must not count them.
+    if (live && typeof live.content === 'string') { state.markdown = withoutProofSpans(live.content); return Promise.resolve(); }
     return fetch('/d/' + encodeURIComponent(slug) + '?token=' + encodeURIComponent(token), { headers: { accept: 'text/markdown' }, cache: 'no-store' })
-      .then(function (r) { return r.text(); }).then(function (text) { state.markdown = text; }).catch(function () {});
+      .then(function (r) { return r.text(); }).then(function (text) { state.markdown = withoutProofSpans(text); }).catch(function () {});
   }
   function stamp(method, approver) {
     if (method === 'POST') {
