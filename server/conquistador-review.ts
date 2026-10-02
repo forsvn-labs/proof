@@ -1,13 +1,13 @@
 // Conquistador review routes: channel, playbooks, check findings, and the approval stamp.
 // The approval stamp is a human decision for one exact document text. It records the approver,
-// the time, and the SHA-256 of the clean Markdown. Every read compares that hash with the
+// the time, and the SHA-256 of the clean Markdown, with all Proof annotation spans removed. Every read compares that hash with the
 // current text, so any edit clears the stamp. Only a same-origin browser request with the owner
 // link can stamp or withdraw; agent requests are refused.
 import { createHash } from 'crypto';
 import { Router, type Request, type Response } from 'express';
 import { getCanonicalReadableDocumentSync } from './collab.js';
 import { addDocumentEvent, getDb, resolveDocumentAccess } from './db.js';
-import { stripProofSpanTags } from './proof-span-strip.js';
+import { stripAllProofSpanTags } from './proof-span-strip.js';
 
 export const CHECK_AUTHOR = 'ai:conquistador-check';
 const CHANNELS = ['x', 'linkedin', 'email', 'search', 'ad'] as const;
@@ -108,7 +108,8 @@ function presentedSecret(req: Request): string {
 function currentText(slug: string): string | null {
   const doc = getCanonicalReadableDocumentSync(slug, 'share');
   if (!doc || doc.share_state === 'DELETED') return null;
-  return stripProofSpanTags(doc.markdown ?? '');
+  // Comment and suggestion anchors are review markup, not document text.
+  return stripAllProofSpanTags(doc.markdown ?? '');
 }
 
 // Reads the stamp and clears it when the text changed since approval.
@@ -178,6 +179,7 @@ conquistadorReviewRoutes.get('/:slug/conquistador/review', (req: Request, res: R
     success: true,
     slug,
     sha256,
+    markdown: text,
     channel: normalizeChannel(data.channel),
     frontMatter: data,
     playbooks: parsePlaybooks(text),

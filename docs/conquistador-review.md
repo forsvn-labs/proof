@@ -19,8 +19,8 @@ The editor page shows a **Review** panel with three tabs:
 
 ## Approval stamp
 
-The stamp records the approver's name, the time, and the SHA-256 of the clean document Markdown
-(`GET /d/:slug` with `Accept: text/markdown`). Every read compares the stored hash with the
+The stamp records the approver's name, the time, and the SHA-256 of the clean document Markdown:
+the stored text with every Proof annotation span (comment, suggestion, authorship) removed. Every read compares the stored hash with the
 current text. A change clears the stamp. A Proof re-serialization, for example `-` bullets
 written as `*`, also clears it; approve again after it.
 
@@ -37,7 +37,7 @@ A stamp approves one exact text. It does not approve a send, a publication, or s
 
 | Route | Token | Does |
 |---|---|---|
-| `GET /documents/:slug/conquistador/review` | any document token | Returns `sha256`, `channel`, `frontMatter`, `playbooks`, `openCheckFindings`, and `approval` |
+| `GET /documents/:slug/conquistador/review` | any document token | Returns `markdown` (clean text), `sha256`, `channel`, `frontMatter`, `playbooks`, `openCheckFindings`, and `approval` |
 | `POST /documents/:slug/conquistador/approval` | owner, browser only | Body `{ approver, sha256 }`. Records the stamp |
 | `DELETE /documents/:slug/conquistador/approval` | owner, browser only | Withdraws the stamp |
 
