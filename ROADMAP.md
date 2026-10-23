@@ -1,11 +1,5 @@
-# proof roadmap
+# Roadmap compatibility pointer
 
-## Current handoff
-
-Record consolidation: 13 October 2026. Delivery dates below retain the source record's dates. This migration does not verify a new release.
-
-State: Maintained fork; delivery state unverified.
-
-This checkout contains the FORSVN fork of Proof SDK, its Conquistador review panel, and loopback binding. The README is the verified local entry.
-
-Next action: Choose a specific fork change or upstream integration before adding features. No hosted deployment is claimed by this migration.
+[STATUS.md](STATUS.md) owns current state, priorities, blockers, next steps,
+and deferred plans. [VISION.md](VISION.md) owns scope and non-goals.
+Earlier roadmap revisions remain in Git history; do not maintain a second backlog here.

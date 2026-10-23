@@ -1,39 +1,46 @@
-# proof structure
+# Proof fork structure
 
-This Git root owns the files tracked in [forsvn-labs/proof](https://github.com/forsvn-labs/proof). The repository is public. Keep private planning and external folder identities in the authorized Drive lookup.
+This public npm workspace contains reusable SDK packages, an example,
+and the FORSVN fork's editor/server integration.
 
-VISION.md records purpose. ROADMAP.md owns priorities, active work, blockers, and the live handoff. CHANGELOG.md records verified delivery. STRUCTURE.md maps ownership and working commands. BRAIN.md locates external materials.
+## Code architecture
 
-## Architecture and ownership
+The Vite editor uses the document/editor layer. Express routes expose
+document operations and the agent bridge; Yjs/Hocuspocus handles live
+collaboration, while SQLite persists document state. The Conquistador
+routes add channel review and browser-only approval stamps tied to the
+clean Markdown hash. [server/index.ts](server/index.ts) binds the local
+API to `127.0.0.1`; [vite.config.ts](vite.config.ts) configures editor port
+3000 and proxies to the API on port 4000.
 
-packages/ owns document core, editor, server, SQLite store, and the agent bridge. apps/proof-example/ is the example. src/ and server/ own the fork UI and HTTP routes. docs/conquistador-review.md defines the added review panel. LICENSE, NOTICE, and TRADEMARKS.md preserve upstream boundaries.
+```text
+packages/doc-core/          Shared document contracts
+packages/doc-editor/        Editor package surface
+packages/doc-server/        Server package surface
+packages/doc-store-sqlite/  SQLite store package surface
+packages/agent-bridge/      Agent client package
+apps/proof-example/         Example SDK application
+src/editor/                Markdown editor and collaboration UI
+src/ui/                    Review and interaction controls
+src/tests/                 SDK, editor, and server regressions
+server/                    HTTP routes, collaboration, and persistence
+server/conquistador-review.ts  Fork review and approval routes
+public/                    Browser assets
+scripts/                   Build finalization helpers
+docs/                      API contracts, ADR, and fork review guide
+package-lock.json          Locked npm dependency graph
+```
 
-## Locations
+[README.md](README.md) has setup; [AGENT_CONTRACT.md](AGENT_CONTRACT.md)
+defines the HTTP contract. [docs/conquistador-review.md](docs/conquistador-review.md)
+defines review semantics. [LICENSE](LICENSE), [NOTICE](NOTICE), and
+[TRADEMARKS.md](TRADEMARKS.md) preserve upstream boundaries.
 
-- [AGENT_CONTRACT.md](AGENT_CONTRACT.md)
-- [LICENSE](LICENSE)
-- [NOTICE](NOTICE)
-- [README.md](README.md)
-- [TRADEMARKS.md](TRADEMARKS.md)
-- [apps](apps/)
-- [docs](docs/)
-- [package-lock.json](package-lock.json)
-- [package.json](package.json)
-- [packages](packages/)
-- [public](public/)
-- [scripts](scripts/)
-- [server](server/)
-- [src](src/)
-- [tsconfig.json](tsconfig.json)
-- [tsconfig.server.json](tsconfig.server.json)
-- [vite.config.ts](vite.config.ts)
+## External knowledge architecture
 
-## Working commands
-
-- From `.`, run `bun install` before package work. Available commands: `bun run dev`, `bun run build`, `bun run test`.
-
-Use [README.md](README.md) for setup details and project-specific validation. This record migration does not re-run application release or deployment gates.
-
-## External materials and recall
-
-Use BRAIN.md for original media, sendables, and verification evidence. Keep deployable assets needed by a build in Git with their source and license. Mem0 is optional recall through the correct Executor v2 account. Store a scope, project key, source pointer, and truth date; open the current source before using a recalled claim. Do not upload credentials, private identity, medical, finance, or employer-confidential source bodies.
+[BRAIN.md](BRAIN.md) resolves `forsvn/proof` to its Google Drive project
+and `OPEN THIS.md` map. Research, private planning, and review resources
+belong there; executable code and code contracts belong in Git. SQLite
+remains the runtime document store, separate from rich project knowledge.
+Private review content is not copied into this public repository.
+[STATUS.md](STATUS.md) owns current state, rather than archived handoffs.
